@@ -1,0 +1,5 @@
+"fastq_fwd_staging_file_name","fastq_rev_staging_file_name","import_type","insert_size_mean","insert_size_std_dev", "interleaved","name","read_orientation_outward","sequencing_tech","single_genome","sra_staging_file_name"
+ "yHDO599_Dipodascus_anamola_plate33_S74_R1.fastq","yHDO599_Dipodascus_anamola_plate33_S74_R2.fastq","FASTQ/FASTA",None,None,0,"yHDO599_Dipodascus_anamola_plate33_S74_R2.fastq_reads",0,"Illumina",1,""
+
+# So the idea here would be to have one line of inputs per app run, with no defaults specified
+# Still have to work out None/0/"" values
