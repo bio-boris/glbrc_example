@@ -109,6 +109,8 @@ def submit_assemble_reads_jobs(uploader_job_ids):
 def submit_spades_job(reads_upa):
     # TODO turn params into dataclass
     # TODO pass unique contig output name
+    # TODO Specify narrative so it shows up in the browser
+
     print("About to run spades against", reads_upa)
     params = {'app_id': 'kb_SPAdes/run_SPAdes',
               'method': 'kb_SPAdes.run_SPAdes',
@@ -127,9 +129,10 @@ def submit_spades_job(reads_upa):
               }
     try:
         job_id = ee2.run_job(params=params)
+        print("Submitted spades job", job_id)
     except Exception as e:
         print("Failed to submit spades job", e)
-    print("Submitted spades job", job_id)
+
 
 
 # submit_assemble_reads_jobs(["5f4de4399534ceb23462c318"])
