@@ -126,7 +126,7 @@ def submit_spades_job(reads_upa, name):
               'params': [{'dna_source': 'standard',
                           'kmer_sizes': [],
                           'min_contig_length': 500,
-                          'output_contigset_name': f'{name}.out',
+                          'output_contigset_name': f'{name}.contigs',
                           'read_libraries': [reads_upa],
                           'skip_error_correction': 0,
                           'workspace_name': 'bsadkhin:narrative_1598898899343'}]
