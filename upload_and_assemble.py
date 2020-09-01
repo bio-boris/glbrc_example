@@ -20,6 +20,9 @@ from installed_clients.execution_engine2Client import execution_engine2 as EE2
 ee2 = EE2(url="https://kbase.us/services/ee2", token=os.environ['KB_AUTH_TOKEN'])
 wsid = 71011  # TODO put this somewhere else
 
+upload_job_filenames = {}
+
+
 
 @dataclass
 class FASTQ_or_SRA_to_READS_input:
@@ -67,6 +70,7 @@ def submit_fastq_to_reads_jobs(uploader_inputs: List[FASTQ_or_SRA_to_READS_input
         try:
             job_id = ee2.run_job(params=params)
             job_ids.append(job_id)
+            upload_job_filenames[job_id] = uploader_input.name
         except Exception as e:
 
             print("Failed to submit upload job", e)
@@ -97,7 +101,7 @@ def submit_assemble_reads_jobs(uploader_job_ids):
             if status == 'completed':
                 reads_upa = job_state['job_output']['result'][0]['obj_ref']
                 del uploader_jobs[job_id]
-                submit_spades_job(reads_upa)
+                submit_spades_job(reads_upa=reads_upa, name=upload_job_filenames[job_id])
             elif status == 'terminated':
                 del uploader_jobs[job_id]
 
@@ -106,9 +110,9 @@ def submit_assemble_reads_jobs(uploader_job_ids):
 
 
 
-def submit_spades_job(reads_upa):
+def submit_spades_job(reads_upa, name):
     # TODO turn params into dataclass
-    # TODO pass unique contig output name
+    # TODO pass unique contig output name? What happens if names are overwritten?
     # TODO Specify narrative so it shows up in the browser
 
     print("About to run spades against", reads_upa)
@@ -122,7 +126,7 @@ def submit_spades_job(reads_upa):
               'params': [{'dna_source': 'standard',
                           'kmer_sizes': [],
                           'min_contig_length': 500,
-                          'output_contigset_name': f'{reads_upa}.out',
+                          'output_contigset_name': f'{name}.out',
                           'read_libraries': [reads_upa],
                           'skip_error_correction': 0,
                           'workspace_name': 'bsadkhin:narrative_1598898899343'}]
